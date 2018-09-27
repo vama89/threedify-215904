@@ -13,6 +13,9 @@ handlers:
 - url: /three.js-master
   static_dir: three.js-master
 
+- url: /js
+  static_dir: js
+
 - url: .*
   script: main.app
 
