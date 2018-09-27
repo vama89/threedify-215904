@@ -1,0 +1,3 @@
+9/27/18
+dat is downloaded from github. copy pasted
+orbitcontrols was from threejs example files. I did not use lynda copy. Gets a constructor error.
