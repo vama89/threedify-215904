@@ -1,4 +1,4 @@
-var container, stats;
+			var container, stats;
 			var camera, controls, scene, renderer;
 			var objects = [], plane;
 

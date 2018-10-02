@@ -1,0 +1,1 @@
+I think the only reason this one I uploaded to yc worked cause maybe I'm not loading all those links from gyphy. This is one shot from images. Less of a load constraint cause I still get that CSSrender error on the console. Be aware of this when coding the actual build.
