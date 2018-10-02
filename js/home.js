@@ -1,4 +1,4 @@
-function init() {
+function init() {	
 	var scene = new THREE.Scene();
 	var gui = new dat.GUI();
 
