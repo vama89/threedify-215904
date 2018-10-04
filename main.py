@@ -43,7 +43,7 @@ class Handler(webapp2.RequestHandler):
 
 class MainHandler(Handler):
     def get(self):
-        self.render("ycApplicationMatrix.html")
+        self.render("home.html")
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler)
