@@ -8,6 +8,7 @@ function init() {
 	var pointLight = getPointLight(1);
 	var sphere = getSphere(0.05);
 	var plane = getPlane(5,5)
+	var boxWest = getBox(1,1,1);
 
 	var camera = new THREE.PerspectiveCamera(45, window.innerWidth/window.innerHeight,1,1000);
 	var renderer = new THREE.WebGLRenderer();
@@ -17,7 +18,8 @@ function init() {
 	scene.add(box);
 	pointLight.add(sphere);
 	scene.add(pointLight);
-	scene.add(plane)
+	scene.add(plane);
+	scene.add(boxWest);
 
 	//positions of objects
 	camera.position.y=10;
@@ -28,6 +30,8 @@ function init() {
 
 	plane.rotation.x = 10;
 	plane.position.y = -1;
+
+	boxWest.position.x = -5;
 	
 	renderer.setSize(window.innerWidth, window.innerHeight);
 	renderer.setClearColor('rgb(120,120,120)');
