@@ -4,12 +4,14 @@
 
 Menubar.Edit = function ( editor ) {
 
+	var strings = editor.strings;
+
 	var container = new UI.Panel();
 	container.setClass( 'menu' );
 
 	var title = new UI.Panel();
 	title.setClass( 'title' );
-	title.setTextContent( 'Edit' );
+	title.setTextContent( strings.getKey( 'menubar/edit' ) );
 	container.add( title );
 
 	var options = new UI.Panel();
@@ -18,27 +20,65 @@ Menubar.Edit = function ( editor ) {
 
 	// Undo
 
-	var option = new UI.Panel();
-	option.setClass( 'option' );
-	option.setTextContent( 'Undo' );
-	option.onClick( function () {
+	var undo = new UI.Row();
+	undo.setClass( 'option' );
+	undo.setTextContent( strings.getKey( 'menubar/edit/undo' ) );
+	undo.onClick( function () {
 
-		editor.history.undo();
+		editor.undo();
 
 	} );
-	options.add( option );
+	options.add( undo );
 
 	// Redo
 
-	var option = new UI.Panel();
+	var redo = new UI.Row();
+	redo.setClass( 'option' );
+	redo.setTextContent( strings.getKey( 'menubar/edit/redo' ) );
+	redo.onClick( function () {
+
+		editor.redo();
+
+	} );
+	options.add( redo );
+
+	// Clear History
+
+	var option = new UI.Row();
 	option.setClass( 'option' );
-	option.setTextContent( 'Redo' );
+	option.setTextContent( strings.getKey( 'menubar/edit/clear_history' ) );
 	option.onClick( function () {
 
-		editor.history.redo();
+		if ( confirm( 'The Undo/Redo History will be cleared. Are you sure?' ) ) {
+
+			editor.history.clear();
+
+		}
 
 	} );
 	options.add( option );
+
+
+	editor.signals.historyChanged.add( function () {
+
+		var history = editor.history;
+
+		undo.setClass( 'option' );
+		redo.setClass( 'option' );
+
+		if ( history.undos.length == 0 ) {
+
+			undo.setClass( 'inactive' );
+
+		}
+
+		if ( history.redos.length == 0 ) {
+
+			redo.setClass( 'inactive' );
+
+		}
+
+	} );
 
 	// ---
 
@@ -46,9 +86,9 @@ Menubar.Edit = function ( editor ) {
 
 	// Clone
 
-	var option = new UI.Panel();
+	var option = new UI.Row();
 	option.setClass( 'option' );
-	option.setTextContent( 'Clone' );
+	option.setTextContent( strings.getKey( 'menubar/edit/clone' ) );
 	option.onClick( function () {
 
 		var object = editor.selected;
@@ -57,35 +97,33 @@ Menubar.Edit = function ( editor ) {
 
 		object = object.clone();
 
-		editor.addObject( object );
-		editor.select( object );
+		editor.execute( new AddObjectCommand( object ) );
 
 	} );
 	options.add( option );
 
 	// Delete
 
-	var option = new UI.Panel();
+	var option = new UI.Row();
 	option.setClass( 'option' );
-	option.setTextContent( 'Delete' );
+	option.setTextContent( strings.getKey( 'menubar/edit/delete' ) );
 	option.onClick( function () {
 
 		var object = editor.selected;
 
-		if ( confirm( 'Delete ' + object.name + '?' ) === false ) return;
-
 		var parent = object.parent;
-		editor.removeObject( object );
-		editor.select( parent );
+		if ( parent === undefined ) return; // avoid deleting the camera or scene
+
+		editor.execute( new RemoveObjectCommand( object ) );
 
 	} );
 	options.add( option );
 
 	// Minify shaders
 
-	var option = new UI.Panel();
+	var option = new UI.Row();
 	option.setClass( 'option' );
-	option.setTextContent( 'Minify Shaders' );
+	option.setTextContent( strings.getKey( 'menubar/edit/minify_shaders' ) );
 	option.onClick( function() {
 
 		var root = editor.selected || editor.scene;
@@ -108,6 +146,7 @@ Menubar.Edit = function ( editor ) {
 
 		}
 
+		var cmds = [];
 		root.traverse( function ( object ) {
 
 			var material = object.material;
@@ -119,8 +158,8 @@ Menubar.Edit = function ( editor ) {
 					var shader = glslprep.minifyGlsl( [
 							material.vertexShader, material.fragmentShader ] );
 
-					material.vertexShader = shader[ 0 ];
-					material.fragmentShader = shader[ 1 ];
+					cmds.push( new SetMaterialValueCommand( object, 'vertexShader', shader[ 0 ] ) );
+					cmds.push( new SetMaterialValueCommand( object, 'fragmentShader', shader[ 1 ] ) );
 
 					++nMaterialsChanged;
 
@@ -147,6 +186,12 @@ Menubar.Edit = function ( editor ) {
 			}
 
 		} );
+
+		if ( nMaterialsChanged > 0 ) {
+
+			editor.execute( new MultiCmdsCommand( cmds ), 'Minify Shaders' );
+
+		}
 
 		window.alert( nMaterialsChanged +
 				" material(s) were changed.\n" + errors.join( "\n" ) );

@@ -1,34 +1,52 @@
-THREE.WebGLPrograms = function ( renderer, capabilities ) {
+/**
+ * @author mrdoob / http://mrdoob.com/
+ */
+
+import { BackSide, DoubleSide, CubeUVRefractionMapping, CubeUVReflectionMapping, GammaEncoding, LinearEncoding, ObjectSpaceNormalMap } from '../../constants.js';
+import { WebGLProgram } from './WebGLProgram.js';
+
+function WebGLPrograms( renderer, extensions, capabilities ) {
 
 	var programs = [];
 
 	var shaderIDs = {
 		MeshDepthMaterial: 'depth',
+		MeshDistanceMaterial: 'distanceRGBA',
 		MeshNormalMaterial: 'normal',
 		MeshBasicMaterial: 'basic',
 		MeshLambertMaterial: 'lambert',
 		MeshPhongMaterial: 'phong',
+		MeshToonMaterial: 'phong',
+		MeshStandardMaterial: 'physical',
+		MeshPhysicalMaterial: 'physical',
+		MeshMatcapMaterial: 'matcap',
 		LineBasicMaterial: 'basic',
 		LineDashedMaterial: 'dashed',
-		PointsMaterial: 'points'
+		PointsMaterial: 'points',
+		ShadowMaterial: 'shadow',
+		SpriteMaterial: 'sprite'
 	};
 
 	var parameterNames = [
-		"precision", "supportsVertexTextures", "map", "envMap", "envMapMode",
-		"lightMap", "aoMap", "emissiveMap", "bumpMap", "normalMap", "displacementMap", "specularMap",
+		"precision", "supportsVertexTextures", "map", "mapEncoding", "matcapEncoding", "envMap", "envMapMode", "envMapEncoding",
+		"lightMap", "aoMap", "emissiveMap", "emissiveMapEncoding", "bumpMap", "normalMap", "objectSpaceNormalMap", "displacementMap", "specularMap",
+		"roughnessMap", "metalnessMap", "gradientMap",
 		"alphaMap", "combine", "vertexColors", "fog", "useFog", "fogExp",
 		"flatShading", "sizeAttenuation", "logarithmicDepthBuffer", "skinning",
 		"maxBones", "useVertexTexture", "morphTargets", "morphNormals",
-		"maxMorphTargets", "maxMorphNormals", "maxDirLights", "maxPointLights",
-		"maxSpotLights", "maxHemiLights", "maxShadows", "shadowMapEnabled", "pointLightShadows",
-		"shadowMapType", "shadowMapDebug", "alphaTest", "metal", "doubleSided",
-		"flipSided"
+		"maxMorphTargets", "maxMorphNormals", "premultipliedAlpha",
+		"numDirLights", "numPointLights", "numSpotLights", "numHemiLights", "numRectAreaLights",
+		"shadowMapEnabled", "shadowMapType", "toneMapping", 'physicallyCorrectLights',
+		"alphaTest", "doubleSided", "flipSided", "numClippingPlanes", "numClipIntersection", "depthPacking", "dithering"
 	];
 
 
-	function allocateBones ( object ) {
+	function allocateBones( object ) {
 
-		if ( capabilities.floatVertexTextures && object && object.skeleton && object.skeleton.useVertexTexture ) {
+		var skeleton = object.skeleton;
+		var bones = skeleton.bones;
+
+		if ( capabilities.floatVertexTextures ) {
 
 			return 1024;
 
@@ -44,17 +62,12 @@ THREE.WebGLPrograms = function ( renderer, capabilities ) {
 			var nVertexUniforms = capabilities.maxVertexUniforms;
 			var nVertexMatrices = Math.floor( ( nVertexUniforms - 20 ) / 4 );
 
-			var maxBones = nVertexMatrices;
+			var maxBones = Math.min( nVertexMatrices, bones.length );
 
-			if ( object !== undefined && object instanceof THREE.SkinnedMesh ) {
+			if ( maxBones < bones.length ) {
 
-				maxBones = Math.min( object.skeleton.bones.length, maxBones );
-
-				if ( maxBones < object.skeleton.bones.length ) {
-
-					console.warn( 'WebGLRenderer: too many bones - ' + object.skeleton.bones.length + ', this GPU supports just ' + maxBones + ' (try OpenGL instead of ANGLE)' );
-
-				}
+				console.warn( 'THREE.WebGLRenderer: Skeleton has ' + bones.length + ' bones. This GPU supports ' + maxBones + '.' );
+				return 0;
 
 			}
 
@@ -64,65 +77,45 @@ THREE.WebGLPrograms = function ( renderer, capabilities ) {
 
 	}
 
-	function allocateLights( lights ) {
+	function getTextureEncodingFromMap( map, gammaOverrideLinear ) {
 
-		var dirLights = 0;
-		var pointLights = 0;
-		var spotLights = 0;
-		var hemiLights = 0;
+		var encoding;
 
-		for ( var l = 0, ll = lights.length; l < ll; l ++ ) {
+		if ( ! map ) {
 
-			var light = lights[ l ];
+			encoding = LinearEncoding;
 
-			if ( light.visible === false ) continue;
+		} else if ( map.isTexture ) {
 
-			if ( light instanceof THREE.DirectionalLight ) dirLights ++;
-			if ( light instanceof THREE.PointLight ) pointLights ++;
-			if ( light instanceof THREE.SpotLight ) spotLights ++;
-			if ( light instanceof THREE.HemisphereLight ) hemiLights ++;
+			encoding = map.encoding;
 
-		}
+		} else if ( map.isWebGLRenderTarget ) {
 
-		return { 'directional': dirLights, 'point': pointLights, 'spot': spotLights, 'hemi': hemiLights };
-
-	}
-
-	function allocateShadows( lights ) {
-
-		var maxShadows = 0;
-		var pointLightShadows = 0;
-
-		for ( var l = 0, ll = lights.length; l < ll; l ++ ) {
-
-			var light = lights[ l ];
-
-			if ( ! light.castShadow ) continue;
-
-			if ( light instanceof THREE.SpotLight || light instanceof THREE.DirectionalLight ) maxShadows ++;
-			if ( light instanceof THREE.PointLight ) {
-
-				maxShadows ++;
-				pointLightShadows ++;
-
-			}
+			console.warn( "THREE.WebGLPrograms.getTextureEncodingFromMap: don't use render targets as textures. Use their .texture property instead." );
+			encoding = map.texture.encoding;
 
 		}
 
-		return { 'maxShadows': maxShadows, 'pointLightShadows': pointLightShadows };
+		// add backwards compatibility for WebGLRenderer.gammaInput/gammaOutput parameter, should probably be removed at some point.
+		if ( encoding === LinearEncoding && gammaOverrideLinear ) {
+
+			encoding = GammaEncoding;
+
+		}
+
+		return encoding;
 
 	}
 
-	this.getParameters = function ( material, lights, fog, object ) {
+	this.getParameters = function ( material, lights, shadows, fog, nClipPlanes, nClipIntersection, object ) {
 
 		var shaderID = shaderIDs[ material.type ];
+
 		// heuristics to create shader parameters according to lights in the scene
 		// (not to blow over maxLights budget)
 
-		var maxLightCount = allocateLights( lights );
-		var allocatedShadows = allocateShadows( lights );
-		var maxBones = allocateBones( object );
-		var precision = renderer.getPrecision();
+		var maxBones = object.isSkinnedMesh ? allocateBones( object ) : 0;
+		var precision = capabilities.precision;
 
 		if ( material.precision !== null ) {
 
@@ -130,11 +123,13 @@ THREE.WebGLPrograms = function ( renderer, capabilities ) {
 
 			if ( precision !== material.precision ) {
 
-				console.warn( 'THREE.WebGLRenderer.initMaterial:', material.precision, 'not supported, using', precision, 'instead.' );
+				console.warn( 'THREE.WebGLProgram.getParameters:', material.precision, 'not supported, using', precision, 'instead.' );
 
 			}
 
 		}
+
+		var currentRenderTarget = renderer.getRenderTarget();
 
 		var parameters = {
 
@@ -142,56 +137,76 @@ THREE.WebGLPrograms = function ( renderer, capabilities ) {
 
 			precision: precision,
 			supportsVertexTextures: capabilities.vertexTextures,
-
+			outputEncoding: getTextureEncodingFromMap( ( ! currentRenderTarget ) ? null : currentRenderTarget.texture, renderer.gammaOutput ),
 			map: !! material.map,
+			mapEncoding: getTextureEncodingFromMap( material.map, renderer.gammaInput ),
+			matcap: !! material.matcap,
+			matcapEncoding: getTextureEncodingFromMap( material.matcap, renderer.gammaInput ),
 			envMap: !! material.envMap,
 			envMapMode: material.envMap && material.envMap.mapping,
+			envMapEncoding: getTextureEncodingFromMap( material.envMap, renderer.gammaInput ),
+			envMapCubeUV: ( !! material.envMap ) && ( ( material.envMap.mapping === CubeUVReflectionMapping ) || ( material.envMap.mapping === CubeUVRefractionMapping ) ),
 			lightMap: !! material.lightMap,
 			aoMap: !! material.aoMap,
 			emissiveMap: !! material.emissiveMap,
+			emissiveMapEncoding: getTextureEncodingFromMap( material.emissiveMap, renderer.gammaInput ),
 			bumpMap: !! material.bumpMap,
 			normalMap: !! material.normalMap,
+			objectSpaceNormalMap: material.normalMapType === ObjectSpaceNormalMap,
 			displacementMap: !! material.displacementMap,
+			roughnessMap: !! material.roughnessMap,
+			metalnessMap: !! material.metalnessMap,
 			specularMap: !! material.specularMap,
 			alphaMap: !! material.alphaMap,
+
+			gradientMap: !! material.gradientMap,
 
 			combine: material.combine,
 
 			vertexColors: material.vertexColors,
 
-			fog: fog,
+			fog: !! fog,
 			useFog: material.fog,
-			fogExp: fog instanceof THREE.FogExp2,
+			fogExp: ( fog && fog.isFogExp2 ),
 
-			flatShading: material.shading === THREE.FlatShading,
+			flatShading: material.flatShading,
 
 			sizeAttenuation: material.sizeAttenuation,
 			logarithmicDepthBuffer: capabilities.logarithmicDepthBuffer,
 
-			skinning: material.skinning,
+			skinning: material.skinning && maxBones > 0,
 			maxBones: maxBones,
-			useVertexTexture: capabilities.floatVertexTextures && object && object.skeleton && object.skeleton.useVertexTexture,
+			useVertexTexture: capabilities.floatVertexTextures,
 
 			morphTargets: material.morphTargets,
 			morphNormals: material.morphNormals,
 			maxMorphTargets: renderer.maxMorphTargets,
 			maxMorphNormals: renderer.maxMorphNormals,
 
-			maxDirLights: maxLightCount.directional,
-			maxPointLights: maxLightCount.point,
-			maxSpotLights: maxLightCount.spot,
-			maxHemiLights: maxLightCount.hemi,
+			numDirLights: lights.directional.length,
+			numPointLights: lights.point.length,
+			numSpotLights: lights.spot.length,
+			numRectAreaLights: lights.rectArea.length,
+			numHemiLights: lights.hemi.length,
 
-			maxShadows: allocatedShadows.maxShadows,
-			pointLightShadows: allocatedShadows.pointLightShadows,
-			shadowMapEnabled: renderer.shadowMap.enabled && object.receiveShadow && allocatedShadows.maxShadows > 0,
+			numClippingPlanes: nClipPlanes,
+			numClipIntersection: nClipIntersection,
+
+			dithering: material.dithering,
+
+			shadowMapEnabled: renderer.shadowMap.enabled && object.receiveShadow && shadows.length > 0,
 			shadowMapType: renderer.shadowMap.type,
-			shadowMapDebug: renderer.shadowMap.debug,
+
+			toneMapping: renderer.toneMapping,
+			physicallyCorrectLights: renderer.physicallyCorrectLights,
+
+			premultipliedAlpha: material.premultipliedAlpha,
 
 			alphaTest: material.alphaTest,
-			metal: material.metal,
-			doubleSided: material.side === THREE.DoubleSide,
-			flipSided: material.side === THREE.BackSide
+			doubleSided: material.side === DoubleSide,
+			flipSided: material.side === BackSide,
+
+			depthPacking: ( material.depthPacking !== undefined ) ? material.depthPacking : false
 
 		};
 
@@ -201,16 +216,16 @@ THREE.WebGLPrograms = function ( renderer, capabilities ) {
 
 	this.getProgramCode = function ( material, parameters ) {
 
-		var chunks = [];
+		var array = [];
 
 		if ( parameters.shaderID ) {
 
-			chunks.push( parameters.shaderID );
+			array.push( parameters.shaderID );
 
 		} else {
 
-			chunks.push( material.fragmentShader );
-			chunks.push( material.vertexShader );
+			array.push( material.fragmentShader );
+			array.push( material.vertexShader );
 
 		}
 
@@ -218,8 +233,8 @@ THREE.WebGLPrograms = function ( renderer, capabilities ) {
 
 			for ( var name in material.defines ) {
 
-				chunks.push( name );
-				chunks.push( material.defines[ name ] );
+				array.push( name );
+				array.push( material.defines[ name ] );
 
 			}
 
@@ -227,17 +242,21 @@ THREE.WebGLPrograms = function ( renderer, capabilities ) {
 
 		for ( var i = 0; i < parameterNames.length; i ++ ) {
 
-			var parameterName = parameterNames[ i ];
-			chunks.push( parameterName );
-			chunks.push( parameters[ parameterName ] );
+			array.push( parameters[ parameterNames[ i ] ] );
 
 		}
 
-		return chunks.join();
+		array.push( material.onBeforeCompile.toString() );
+
+		array.push( renderer.gammaOutput );
+
+		array.push( renderer.gammaFactor );
+
+		return array.join();
 
 	};
 
-	this.acquireProgram = function ( material, parameters, code ) {
+	this.acquireProgram = function ( material, shader, parameters, code ) {
 
 		var program;
 
@@ -259,7 +278,7 @@ THREE.WebGLPrograms = function ( renderer, capabilities ) {
 
 		if ( program === undefined ) {
 
-			program = new THREE.WebGLProgram( renderer, code, material, parameters );
+			program = new WebGLProgram( renderer, extensions, code, material, shader, parameters, capabilities );
 			programs.push( program );
 
 		}
@@ -268,7 +287,7 @@ THREE.WebGLPrograms = function ( renderer, capabilities ) {
 
 	};
 
-	this.releaseProgram = function( program ) {
+	this.releaseProgram = function ( program ) {
 
 		if ( -- program.usedTimes === 0 ) {
 
@@ -287,4 +306,7 @@ THREE.WebGLPrograms = function ( renderer, capabilities ) {
 	// Exposed for resource monitoring & error feedback via renderer.info:
 	this.programs = programs;
 
-};
+}
+
+
+export { WebGLPrograms };

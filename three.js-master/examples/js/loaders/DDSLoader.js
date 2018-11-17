@@ -2,7 +2,9 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-THREE.DDSLoader = function () {
+THREE.DDSLoader = function ( manager ) {
+
+	THREE.CompressedTextureLoader.call( this, manager );
 
 	this._parser = THREE.DDSLoader.parse;
 
@@ -102,6 +104,7 @@ THREE.DDSLoader.parse = function ( buffer, loadMipmaps ) {
 	var FOURCC_DXT1 = fourCCToInt32( "DXT1" );
 	var FOURCC_DXT3 = fourCCToInt32( "DXT3" );
 	var FOURCC_DXT5 = fourCCToInt32( "DXT5" );
+	var FOURCC_ETC1 = fourCCToInt32( "ETC1" );
 
 	var headerLengthInt = 31; // The header length in 32 bit ints
 
@@ -173,13 +176,19 @@ THREE.DDSLoader.parse = function ( buffer, loadMipmaps ) {
 			dds.format = THREE.RGBA_S3TC_DXT5_Format;
 			break;
 
+		case FOURCC_ETC1:
+
+			blockBytes = 8;
+			dds.format = THREE.RGB_ETC1_Format;
+			break;
+
 		default:
 
 			if ( header[ off_RGBBitCount ] === 32
 				&& header[ off_RBitMask ] & 0xff0000
 				&& header[ off_GBitMask ] & 0xff00
 				&& header[ off_BBitMask ] & 0xff
-				&& header[ off_ABitMask ] & 0xff000000  ) {
+				&& header[ off_ABitMask ] & 0xff000000 ) {
 
 				isRGBAUncompressed = true;
 				blockBytes = 64;
@@ -191,6 +200,7 @@ THREE.DDSLoader.parse = function ( buffer, loadMipmaps ) {
 				return dds;
 
 			}
+
 	}
 
 	dds.mipmapCount = 1;
@@ -210,7 +220,7 @@ THREE.DDSLoader.parse = function ( buffer, loadMipmaps ) {
 		! ( caps2 & DDSCAPS2_CUBEMAP_NEGATIVEY ) ||
 		! ( caps2 & DDSCAPS2_CUBEMAP_POSITIVEZ ) ||
 		! ( caps2 & DDSCAPS2_CUBEMAP_NEGATIVEZ )
-		) ) {
+	) ) {
 
 		console.error( 'THREE.DDSLoader.parse: Incomplete cubemap faces' );
 		return dds;
