@@ -1,0 +1,172 @@
+<!--11/16/18 I just slapped together code from websurf js and youtube to make sure it loaded correctly to be able to play video on top of the 3d world -->
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>three.js css3d - youtube</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<style>
+			html, body {
+				height: 100%;
+				overflow: hidden;
+			}
+			#blocker {
+				position: absolute;
+				top: 0px;
+				left: 0px;
+				width: 100%;
+				height: 100%;
+			}
+		</style>
+	</head>
+	<body>
+		<script src="../build/three.js"></script>
+		<script src="js/controls/TrackballControls.js"></script>
+		<script src="js/renderers/CSS3DRenderer.js"></script>
+
+		<div id="container"></div>
+		<div id="blocker"></div>
+
+		<script>
+
+			var camera, scene, renderer, renderer2;
+			var controls;
+
+			var Element = function ( id, x, y, z, ry ) {
+
+				var div = document.createElement( 'div' );
+				div.style.width = '480px';
+				div.style.height = '360px';
+				div.style.backgroundColor = '#000';
+
+				var iframe = document.createElement( 'iframe' );
+				iframe.style.width = '480px';
+				iframe.style.height = '360px';
+				iframe.style.border = '0px';
+				iframe.src = [ 'https://www.youtube.com/embed/', id, '?rel=0' ].join( '' );
+				div.appendChild( iframe );
+
+				var object = new THREE.CSS3DObject( div );
+				object.position.set( x, y, z );
+				object.rotation.y = ry;
+
+				return object;
+
+			};
+
+			init();
+			animate();
+
+			function init() {
+
+				var container = document.getElementById( 'container' );
+
+				camera = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 1, 5000 );
+				camera.position.set( 500, 350, 750 );
+
+				scene = new THREE.Scene();
+				scene2 = new THREE.Scene();
+
+				renderer = new THREE.CSS3DRenderer();
+				renderer2 = new THREE.WebGLRenderer();
+				
+				renderer2.setPixelRatio( window.devicePixelRatio );
+				renderer2.setSize( window.innerWidth, window.innerHeight );
+				container.appendChild( renderer2.domElement );
+
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				renderer.domElement.style.position = 'absolute';
+				renderer.domElement.style.top = 0;
+				container.appendChild( renderer.domElement );
+
+				var group = new THREE.Group();
+				group.add( new Element( 'SJOz3qjfQXU', 0, 0, 240, 0 ) );
+				group.add( new Element( 'Y2-xZ-1HE-Q', 240, 0, 0, Math.PI / 2 ) );
+				group.add( new Element( 'IrydklNpcFI', 0, 0, - 240, Math.PI ) );
+				group.add( new Element( '9ubytEsCaS0', - 240, 0, 0, - Math.PI / 2 ) );
+				scene.add( group );
+
+				controls = new THREE.TrackballControls( camera );
+				controls.rotateSpeed = 4;
+
+				window.addEventListener( 'resize', onWindowResize, false );
+
+				// Block iframe events when dragging camera
+
+				var blocker = document.getElementById( 'blocker' );
+				blocker.style.display = 'none';
+
+				document.addEventListener( 'mousedown', function () {
+
+					blocker.style.display = '';
+
+				} );
+				document.addEventListener( 'mouseup', function () {
+
+					blocker.style.display = 'none';
+
+				} );
+
+				var box = getBox(50,50,50);
+				var pointLight = getPointLight(50);
+				var sphere = getSphere(5.5);
+				scene2.add(box);
+				pointLight.add(sphere);
+				scene2.add(pointLight);
+				pointLight.position.y = 50.25;
+
+			}
+
+			function onWindowResize() {
+
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				renderer2.setSize( window.innerWidth, window.innerHeight );
+
+			}
+
+			function animate() {
+
+				requestAnimationFrame( animate );
+				controls.update();
+
+				renderer.render( scene, camera );
+				renderer2.render( scene2, camera );
+
+
+			}
+
+function getBox(w,h,d){
+	var geometry = new THREE.BoxGeometry(w,h,d);
+	var material = new THREE.MeshPhongMaterial({
+		color: 0x00ff00
+	});
+	var mesh = new THREE.Mesh(
+		geometry,
+		material
+		);
+	return mesh;
+}
+
+function getSphere(size){
+	var geometry = new THREE.SphereGeometry(size, 24, 24);
+	var material = new THREE.MeshBasicMaterial({
+		color: 'rgb(255, 255, 255)'
+	});
+	var mesh = new THREE.Mesh(
+		geometry,
+		material
+		);
+	return mesh;
+}
+
+function getPointLight(intensity){
+	var light = new THREE.PointLight(0xffffff, intensity);
+
+	return light;
+}
+
+		</script>
+	</body>
+</html>
