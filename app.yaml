@@ -19,6 +19,9 @@ handlers:
 - url: /lib
   static_dir: lib
 
+- url: /sounds
+  static_dir: sounds
+
 - url: .*
   script: main.app
 
