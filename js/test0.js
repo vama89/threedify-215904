@@ -7,6 +7,7 @@ function init() {
 	document.body.appendChild( container );
 
 	//generate objects
+	var objects = [];
 	var box = getBox(1,1,1);
 	box.name = 'box-1';
 	var light = new THREE.AmbientLight( 0x404040 ); // soft white light
@@ -25,47 +26,29 @@ function init() {
 
 	var camera = new THREE.PerspectiveCamera(45, window.innerWidth/window.innerHeight,1,1000);
 	var renderer = new THREE.WebGLRenderer();
-	//var controls = new THREE.OrbitControls(camera, renderer.domElement)
-	var controls = new THREE.PointerLockControls( camera );
-//CONTROLS
-				instructions.addEventListener( 'click', function () {
+	var controls = new THREE.OrbitControls(camera, renderer.domElement)
 
-					controls.lock();
-
-				}, false );
-
-				controls.addEventListener( 'lock', function () {
-
-					instructions.style.display = 'none';
-					blocker.style.display = 'none';
-
-				} );
-
-				controls.addEventListener( 'unlock', function () {
-
-					blocker.style.display = 'block';
-					instructions.style.display = '';
-
-				} );
-
-				scene.add( controls.getObject() );
-//CONTROLS END
-
+//PLACE FOR TESTING CODE
 /*
-	for(i=0; i<1000; i++){
+	var box0 = getBox(1,1,1);
+	box0.position.z = -256;
+	scene.add(box0);
+*/
+/*
+	for(i=0; i<256; i++){
 
 	var distanceBox = getBox(1,1,1);
 	distanceBox.position.z = -i;
 	scene.add(distanceBox);
 	}
-	for(i=0; i<1000; i++){
+	for(i=0; i<256; i++){
 
 	var distanceBox = getBox(1,1,1);
 	distanceBox.position.z = -i;
 	distanceBox.position.x = 1;
 	scene.add(distanceBox);
 	}
-	for(i=0; i<1000; i++){
+	for(i=0; i<256; i++){
 
 	var distanceBox = getBox(1,1,1);
 	distanceBox.position.z = -i;
@@ -121,7 +104,6 @@ console.log(objects.length)
 			}
 }
 */
-//CONTROLS END
 
 	renderer.setSize(window.innerWidth, window.innerHeight);
 	renderer.setClearColor('rgb(120,120,120)');
@@ -132,7 +114,7 @@ console.log(objects.length)
 	stats = new Stats();
 	container.appendChild( stats.dom )
 
-	update(renderer,scene, camera, controls, stats, raycaster);
+	update(renderer,scene, camera, controls, stats);
 
 	return scene;
 };
@@ -199,146 +181,23 @@ function getPlane(w,h){
 }
 
 
-function update(renderer,scene, camera, controls, stats, raycaster){
+function update(renderer,scene, camera, controls, stats){
 	renderer.render(
 		scene,
 		camera
 	);
-	//var box = scene.getObjectByName('box-1');
+	var box = scene.getObjectByName('box-1');
 
-	//box.rotation.y += 0.001;
-	//box.rotation.z += 0.001;
+	box.rotation.y += 0.001;
+	box.rotation.z += 0.001;
 
-	//controls.update();
-//CONTROLS
-	if ( controls.isLocked === true ) {
-		raycaster.ray.origin.copy( controls.getObject().position );
-		raycaster.ray.origin.y -= 10;
+	controls.update();
 
-		var intersections = raycaster.intersectObjects( objects );
-
-		var onObject = intersections.length > 0;
-
-		var time = performance.now();
-		var delta = ( time - prevTime ) / 1000;
-
-		velocity.x -= velocity.x * 10.0 * delta;
-		velocity.z -= velocity.z * 10.0 * delta;
-
-		velocity.y -= 9.8 * 100.0 * delta; // 100.0 = mass
-
-		direction.z = Number( moveForward ) - Number( moveBackward );
-		direction.x = Number( moveLeft ) - Number( moveRight );
-		direction.normalize(); // this ensures consistent movements in all directions
-
-		if ( moveForward || moveBackward ) velocity.z -= direction.z * 400.0 * delta;
-		if ( moveLeft || moveRight ) velocity.x -= direction.x * 400.0 * delta;
-
-		if ( onObject === true ) {
-
-			velocity.y = Math.max( 0, velocity.y );
-			canJump = true;
-
-		}
-
-		controls.getObject().translateX( velocity.x * delta );
-		controls.getObject().translateY( velocity.y * delta );
-		controls.getObject().translateZ( velocity.z * delta );
-
-		if ( controls.getObject().position.y < 10 ) {
-
-			velocity.y = 0;
-			controls.getObject().position.y = 10;
-
-			canJump = true;
-
-		}
-
-		prevTime = time;
-
-	}
-//CONTROLS END
 	requestAnimationFrame(function(){
-		update(renderer,scene, camera, controls, stats, raycaster);
+		update(renderer,scene, camera, controls, stats);
 	})
 
 	stats.update();
 }
-
-var objects=[];
-var moveForward = false;
-var moveBackward = false;
-var moveLeft = false;
-var moveRight = false;
-var canJump = false;
-
-var prevTime = performance.now();
-var velocity = new THREE.Vector3();
-var direction = new THREE.Vector3();
-var vertex = new THREE.Vector3();
-var color = new THREE.Color();
-
-var onKeyDown = function ( event ) {
-
-	switch ( event.keyCode ) {
-
-		case 38: // up
-		case 87: // w
-			moveForward = true;
-			break;
-
-		case 37: // left
-		case 65: // a
-			moveLeft = true;
-			break;
-
-		case 40: // down
-		case 83: // s
-			moveBackward = true;
-			break;
-
-		case 39: // right
-		case 68: // d
-			moveRight = true;
-			break;
-
-		case 32: // space
-			if ( canJump === true ) velocity.y += 350;
-			canJump = false;
-			break;
-
-	}
-};
-
-var onKeyUp = function ( event ) {
-
-	switch ( event.keyCode ) {
-
-		case 38: // up
-		case 87: // w
-			moveForward = false;
-			break;
-
-		case 37: // left
-		case 65: // a
-			moveLeft = false;
-			break;
-
-		case 40: // down
-		case 83: // s
-			moveBackward = false;
-			break;
-
-		case 39: // right
-		case 68: // d
-			moveRight = false;
-			break;
-
-	}
-
-};
-
-document.addEventListener( 'keydown', onKeyDown, false );
-document.addEventListener( 'keyup', onKeyUp, false );
 
 var scene = init();

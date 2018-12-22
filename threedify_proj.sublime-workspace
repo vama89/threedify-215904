@@ -4,12 +4,36 @@
 		"selected_items":
 		[
 			[
-				"play",
-				"playSound"
+				"ad",
+				"add"
+			],
+			[
+				"getB",
+				"getObject"
+			],
+			[
+				"g",
+				"getObject"
+			],
+			[
+				"on",
+				"onKeyDown"
 			],
 			[
 				"move",
 				"moveForward"
+			],
+			[
+				"mov",
+				"moveForward"
+			],
+			[
+				"pre",
+				"prevTime"
+			],
+			[
+				"play",
+				"playSound"
 			],
 			[
 				"R",
@@ -116,6 +140,14 @@
 	"buffers":
 	[
 		{
+			"file": "main.py",
+			"settings":
+			{
+				"buffer_size": 1421,
+				"line_ending": "Unix"
+			}
+		},
+		{
 			"file": "templates/base.html",
 			"settings":
 			{
@@ -127,7 +159,7 @@
 			"file": "templates/webSurf.html",
 			"settings":
 			{
-				"buffer_size": 527,
+				"buffer_size": 715,
 				"line_ending": "Windows"
 			}
 		},
@@ -135,16 +167,16 @@
 			"file": "js/webSurf.js",
 			"settings":
 			{
-				"buffer_size": 4281,
+				"buffer_size": 7556,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "three.js-master/examples/misc_controls_pointerlock.html",
+			"file": "templates/test0.html",
 			"settings":
 			{
-				"buffer_size": 8174,
-				"line_ending": "Unix"
+				"buffer_size": 345,
+				"line_ending": "Windows"
 			}
 		}
 	],
@@ -172,15 +204,18 @@
 	},
 	"file_history":
 	[
-		"/D/TechProjects/threedify-215904/app.yaml",
+		"/D/TechProjects/threedify-215904/js/test0.js",
+		"/D/TechProjects/threedify-215904/templates/test0.html",
 		"/D/TechProjects/threedify-215904/three.js-master/examples/js/controls/PointerLockControls.js",
+		"/D/TechProjects/threedify-215904/three.js-master/examples/js/controls/FirstPersonControls.js",
+		"/D/TechProjects/threedify-215904/three.js-master/examples/webgl_geometry_minecraft.html",
+		"/D/TechProjects/threedify-215904/app.yaml",
 		"/D/TechProjects/threedify-215904/js/innerWorld.js",
 		"/D/TechProjects/threedify-215904/js/webSurf_ML.js",
 		"/D/TechProjects/threedify-215904/main.py",
 		"/D/TechProjects/threedify-215904/three.js-master/examples/css3d_orthographic.html",
 		"/D/TechProjects/threedify-215904/three.js-master/examples/css3d_sandbox.html",
 		"/D/TechProjects/threedify-215904/three.js-master/examples/css3d_youtube.html",
-		"/D/TechProjects/threedify-215904/three.js-master/examples/js/controls/FirstPersonControls.js",
 		"/D/TechProjects/threedify-215904/threedify_proj.sublime-workspace",
 		"/C/Users/varro_000/OneDrive/Documents/webSurf/usersAccounts.txt",
 		"/C/Users/varro_000/OneDrive/Documents/webSurf/businessBackend.txt",
@@ -275,6 +310,9 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"camera",
+			"states",
+			"controls",
 			"raycaste",
 			"objectsOr",
 			"material",
@@ -347,6 +385,34 @@
 			[
 				{
 					"buffer": 0,
+					"file": "main.py",
+					"settings":
+					{
+						"buffer_size": 1421,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								231,
+								231
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
 					"file": "templates/base.html",
 					"settings":
 					{
@@ -364,33 +430,8 @@
 						"settings":
 						{
 							"syntax": "Packages/HTML/HTML.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "templates/webSurf.html",
-					"settings":
-					{
-						"buffer_size": 527,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								527,
-								527
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/HTML/HTML.tmLanguage"
+							"translate_tabs_to_spaces": false,
+							"word_wrap": false
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -400,18 +441,45 @@
 				},
 				{
 					"buffer": 2,
-					"file": "js/webSurf.js",
+					"file": "templates/webSurf.html",
 					"settings":
 					{
-						"buffer_size": 4281,
+						"buffer_size": 715,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2512,
-								2512
+								234,
+								234
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"word_wrap": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "js/webSurf.js",
+					"settings":
+					{
+						"buffer_size": 7556,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1901,
+								1901
 							]
 						],
 						"settings":
@@ -426,28 +494,28 @@
 					"type": "text"
 				},
 				{
-					"buffer": 3,
-					"file": "three.js-master/examples/misc_controls_pointerlock.html",
+					"buffer": 4,
+					"file": "templates/test0.html",
 					"settings":
 					{
-						"buffer_size": 8174,
+						"buffer_size": 345,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2857,
-								2857
+								120,
+								120
 							]
 						],
 						"settings":
 						{
 							"syntax": "Packages/HTML/HTML.tmLanguage",
-							"translate_tabs_to_spaces": false
+							"word_wrap": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 1935.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -515,6 +583,6 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 149.0,
+	"side_bar_width": 126.0,
 	"status_bar_visible": true
 }
