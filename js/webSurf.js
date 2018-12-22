@@ -6,6 +6,8 @@ function init() {
 	container = document.createElement( 'div' );
 	document.body.appendChild( container );
 
+	//triggerYoutubeSearch();
+
 	//generate objects
 	var box = getBox(1,1,1);
 	box.name = 'box-1';
@@ -27,6 +29,7 @@ function init() {
 	var renderer = new THREE.WebGLRenderer();
 	//var controls = new THREE.OrbitControls(camera, renderer.domElement)
 	var controls = new THREE.PointerLockControls( camera );
+
 //CONTROLS
 				instructions.addEventListener( 'click', function () {
 
@@ -135,13 +138,13 @@ console.log(objects.length)
 	update(renderer,scene, camera, controls, stats, raycaster);
 
 	return scene;
-};
+}
 
 function playSound(){
 	a1.play();
 	console.log("hi");
 	console.log(a1);
-};
+}
 
 function getBox(w,h,d){
 	var geometry = new THREE.BoxGeometry(w,h,d);
@@ -210,6 +213,7 @@ function update(renderer,scene, camera, controls, stats, raycaster){
 	//box.rotation.z += 0.001;
 
 	//controls.update();
+
 //CONTROLS
 	if ( controls.isLocked === true ) {
 		raycaster.ray.origin.copy( controls.getObject().position );
@@ -255,6 +259,9 @@ function update(renderer,scene, camera, controls, stats, raycaster){
 		}
 
 		prevTime = time;
+		//reposition here
+		//controls.getObject().position.y = 10;
+		console.log(controls.getObject().position.y);
 
 	}
 //CONTROLS END
@@ -265,6 +272,11 @@ function update(renderer,scene, camera, controls, stats, raycaster){
 	stats.update();
 }
 
+//Global Needs
+//Changing the search terms
+//Controllers
+
+var term = 'ladygaga';
 var objects=[];
 var moveForward = false;
 var moveBackward = false;

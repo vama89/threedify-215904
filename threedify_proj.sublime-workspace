@@ -4,6 +4,10 @@
 		"selected_items":
 		[
 			[
+				"search",
+				"searchTerm"
+			],
+			[
 				"ad",
 				"add"
 			],
@@ -159,7 +163,7 @@
 			"file": "templates/webSurf.html",
 			"settings":
 			{
-				"buffer_size": 715,
+				"buffer_size": 813,
 				"line_ending": "Windows"
 			}
 		},
@@ -167,7 +171,15 @@
 			"file": "js/webSurf.js",
 			"settings":
 			{
-				"buffer_size": 7556,
+				"buffer_size": 7555,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "js/youtubeApi.js",
+			"settings":
+			{
+				"buffer_size": 845,
 				"line_ending": "Windows"
 			}
 		},
@@ -204,6 +216,7 @@
 	},
 	"file_history":
 	[
+		"/D/TechProjects/threedify-215904/js/webSurf_ML.js",
 		"/D/TechProjects/threedify-215904/js/test0.js",
 		"/D/TechProjects/threedify-215904/templates/test0.html",
 		"/D/TechProjects/threedify-215904/three.js-master/examples/js/controls/PointerLockControls.js",
@@ -211,7 +224,6 @@
 		"/D/TechProjects/threedify-215904/three.js-master/examples/webgl_geometry_minecraft.html",
 		"/D/TechProjects/threedify-215904/app.yaml",
 		"/D/TechProjects/threedify-215904/js/innerWorld.js",
-		"/D/TechProjects/threedify-215904/js/webSurf_ML.js",
 		"/D/TechProjects/threedify-215904/main.py",
 		"/D/TechProjects/threedify-215904/three.js-master/examples/css3d_orthographic.html",
 		"/D/TechProjects/threedify-215904/three.js-master/examples/css3d_sandbox.html",
@@ -380,7 +392,7 @@
 	"groups":
 	[
 		{
-			"selected": 2,
+			"selected": 5,
 			"sheets":
 			[
 				{
@@ -423,8 +435,8 @@
 						"selection":
 						[
 							[
-								40,
-								40
+								342,
+								342
 							]
 						],
 						"settings":
@@ -444,15 +456,15 @@
 					"file": "templates/webSurf.html",
 					"settings":
 					{
-						"buffer_size": 715,
+						"buffer_size": 813,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								234,
-								234
+								813,
+								813
 							]
 						],
 						"settings":
@@ -471,15 +483,15 @@
 					"file": "js/webSurf.js",
 					"settings":
 					{
-						"buffer_size": 7556,
+						"buffer_size": 7555,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1901,
-								1901
+								2369,
+								2369
 							]
 						],
 						"settings":
@@ -488,13 +500,39 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 294.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 4,
+					"file": "js/youtubeApi.js",
+					"settings":
+					{
+						"buffer_size": 845,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								532,
+								532
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 5,
 					"file": "templates/test0.html",
 					"settings":
 					{
@@ -583,6 +621,6 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 126.0,
+	"side_bar_width": 147.0,
 	"status_bar_visible": true
 }
