@@ -16,6 +16,7 @@ function init() {
 	var pointLight = getPointLight(1);
 	var sphere = getSphere(0.05);
 	var plane = getPlane(5,5)
+	var arm = getBox(1,1,1)''
 
 	//Controllers PointLock
 	var raycaster;
@@ -31,36 +32,38 @@ function init() {
 	var controls = new THREE.PointerLockControls( camera );
 
 //CONTROLS
-				instructions.addEventListener( 'click', function () {
+	instructions.addEventListener( 'click', function () {
 
-					controls.lock();
+		controls.lock();
 
-				}, false );
+	}, false );
 
-				controls.addEventListener( 'lock', function () {
+	controls.addEventListener( 'lock', function () {
 
-					instructions.style.display = 'none';
-					blocker.style.display = 'none';
+		instructions.style.display = 'none';
+		blocker.style.display = 'none';
 
-				} );
+	} );
 
-				controls.addEventListener( 'unlock', function () {
+	controls.addEventListener( 'unlock', function () {
 
-					blocker.style.display = 'block';
-					instructions.style.display = '';
+		blocker.style.display = 'block';
+		instructions.style.display = '';
 
-				} );
+	} );
 
-				scene.add( controls.getObject() );
+	scene.add( controls.getObject() );
 //CONTROLS END
 
 /*
+//52FPS for 1K
 	for(i=0; i<1000; i++){
 
 	var distanceBox = getBox(1,1,1);
 	distanceBox.position.z = -i;
 	scene.add(distanceBox);
 	}
+//28FPS for 2K
 	for(i=0; i<1000; i++){
 
 	var distanceBox = getBox(1,1,1);
@@ -68,6 +71,7 @@ function init() {
 	distanceBox.position.x = 1;
 	scene.add(distanceBox);
 	}
+//Drops to 20FPS if all are within view
 	for(i=0; i<1000; i++){
 
 	var distanceBox = getBox(1,1,1);
@@ -76,6 +80,14 @@ function init() {
 	scene.add(distanceBox);
 	}
 */
+
+/*this is lvl3.90 of creating air. already maxed at 25 block size
+890 objects generated with the 25(counts box and plane from init)
+48fps-52fps
+*/
+	//innerWorldLoad3_0(25, objects, scene);
+	//console.log(objects);
+
 	//add objects to the scene
 	scene.add(box);
 	pointLight.add(sphere);
@@ -83,6 +95,7 @@ function init() {
 	scene.add(plane);
 	objects.push(box);
 	objects.push(plane);
+	camera.add(arm);
 
 	//positions of objects
 	camera.position.x=1;
@@ -95,8 +108,6 @@ function init() {
 
 	//document.addEventListener('mousedown', playSound, false);
 
-//iono how to pull this out of the init function
-//This will be the place for the controls
 /*
 document.addEventListener('mousedown', blowup, false);
 
@@ -135,7 +146,7 @@ console.log(objects.length)
 	stats = new Stats();
 	container.appendChild( stats.dom )
 
-	update(renderer,scene, camera, controls, stats, raycaster);
+	update(renderer, scene, camera, controls, stats, raycaster);
 
 	return scene;
 }
@@ -202,7 +213,7 @@ function getPlane(w,h){
 }
 
 
-function update(renderer,scene, camera, controls, stats, raycaster){
+function update(renderer, scene, camera, controls, stats, raycaster){
 	renderer.render(
 		scene,
 		camera
@@ -266,10 +277,99 @@ function update(renderer,scene, camera, controls, stats, raycaster){
 	}
 //CONTROLS END
 	requestAnimationFrame(function(){
-		update(renderer,scene, camera, controls, stats, raycaster);
+		update(renderer, scene, camera, controls, stats, raycaster);
 	})
 
 	stats.update();
+}
+
+//12/23/18 Start Date
+
+function innerWorldLoad3_0(size, objects, scene){
+
+	var matrixI ={};
+	var box, boxKey;
+	var ranNum
+
+	for ( x = 0; x < size; x++){
+		for ( y = 0; y < size; y++){
+			for ( z = 0; z < size; z++){
+				
+				//generate the ground floor
+				if (y == 0) {																	// if you are at the bottom make it all land	//BOTTOM
+					//Place a land block
+					box = getBox(1,1,1);
+					box.position.z = z;
+					box.position.x = x;
+					
+					//save in matrix for db and positioning information
+					boxKey = [x,y,z];
+					matrixI[String(boxKey)] = 'Land';
+					objects.push(box);
+					scene.add(box);
+				}
+				else if (1<y<20){																//SEA
+					//Generate Land or Water. Water more probable
+					//random number generator 30% chance Land and 70% chance Water
+					ranNum = Math.random();
+					if (ranNum<.3) {
+						//if the position below you does not have land, then you cannot build
+						//make a checkBox function here for help
+
+						var boxBelow = String([x, y-1, z]);
+						if (matrixI[boxBelow] == 'Land') {
+							box = getBox(1,1,1);
+							box.position.y = y;
+							box.position.z = z;
+							box.position.x = x;
+
+							boxKey = [x,y,z];
+							matrixI[String(boxKey)] = 'Land';
+							objects.push(box);
+							scene.add(box);
+						}
+						else {
+							box = waterBox(1,1,1);
+							box.position.y = y;
+							box.position.z = z;
+							box.position.x = x;
+
+							boxKey = [x,y,z];
+							matrixI[String(boxKey)] = 'Water';
+							//objects.push(box);
+							//scene.add(box);
+						}
+
+					}
+					else {
+						box = waterBox(1,1,1);
+						box.position.y = y;
+						box.position.z = z;
+						box.position.x = x;
+
+						boxKey = [x,y,z];
+						matrixI[String(boxKey)] = 'Water';
+						//objects.push(box);
+						//scene.add(box);
+					}
+					
+					//if it is water, have chance to place fish or animals
+					
+
+				}
+				else if (20<y<50){											//LAND
+					//if this is the first time coming in set the transparent water plane
+					//Generate Land or Water (lakes) or Null
+					//Generate trees provided the surround areas are clear
+				}
+				else {}
+																			//SKY
+					//50<y<size(70) //50 or above						
+					//place clouds
+					//chance of placing birds
+			}
+		}
+	}
 }
 
 //Global Needs

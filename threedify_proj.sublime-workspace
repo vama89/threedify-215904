@@ -4,6 +4,26 @@
 		"selected_items":
 		[
 			[
+				"obje",
+				"objects"
+			],
+			[
+				"inner",
+				"innerWorldLoad"
+			],
+			[
+				"con",
+				"console"
+			],
+			[
+				"sc",
+				"scene"
+			],
+			[
+				"get",
+				"getObject"
+			],
+			[
 				"search",
 				"searchTerm"
 			],
@@ -64,10 +84,6 @@
 				"taco"
 			],
 			[
-				"get",
-				"getBox"
-			],
-			[
 				"object",
 				"objects"
 			],
@@ -82,14 +98,6 @@
 			[
 				"controls",
 				"controls"
-			],
-			[
-				"con",
-				"controls2"
-			],
-			[
-				"sc",
-				"scene2"
 			],
 			[
 				"render",
@@ -163,7 +171,7 @@
 			"file": "templates/webSurf.html",
 			"settings":
 			{
-				"buffer_size": 813,
+				"buffer_size": 731,
 				"line_ending": "Windows"
 			}
 		},
@@ -171,24 +179,32 @@
 			"file": "js/webSurf.js",
 			"settings":
 			{
-				"buffer_size": 7555,
+				"buffer_size": 10361,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "js/youtubeApi.js",
+			"file": "three.js-master/examples/css3d_youtube.html",
 			"settings":
 			{
-				"buffer_size": 845,
-				"line_ending": "Windows"
+				"buffer_size": 2936,
+				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "templates/test0.html",
+			"file": "three.js-master/examples/css3d_orthographic.html",
 			"settings":
 			{
-				"buffer_size": 345,
-				"line_ending": "Windows"
+				"buffer_size": 3460,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "three.js-master/examples/css3d_sandbox.html",
+			"settings":
+			{
+				"buffer_size": 3117,
+				"line_ending": "Unix"
 			}
 		}
 	],
@@ -216,18 +232,21 @@
 	},
 	"file_history":
 	[
+		"/D/TechProjects/threedify-215904/js/youtubeApi.js",
+		"/D/TechProjects/threedify-215904/three.js-master/examples/webgl_geometry_minecraft_ao.html",
+		"/D/TechProjects/threedify-215904/three.js-master/examples/webgl_geometry_minecraft.html",
+		"/D/TechProjects/threedify-215904/three.js-master/examples/misc_controls_pointerlock.html",
+		"/D/TechProjects/threedify-215904/three.js-master/examples/js/controls/PointerLockControls.js",
+		"/D/TechProjects/threedify-215904/three.js-master/examples/css3d_youtube.html",
+		"/D/TechProjects/threedify-215904/templates/test0.html",
 		"/D/TechProjects/threedify-215904/js/webSurf_ML.js",
 		"/D/TechProjects/threedify-215904/js/test0.js",
-		"/D/TechProjects/threedify-215904/templates/test0.html",
-		"/D/TechProjects/threedify-215904/three.js-master/examples/js/controls/PointerLockControls.js",
 		"/D/TechProjects/threedify-215904/three.js-master/examples/js/controls/FirstPersonControls.js",
-		"/D/TechProjects/threedify-215904/three.js-master/examples/webgl_geometry_minecraft.html",
 		"/D/TechProjects/threedify-215904/app.yaml",
 		"/D/TechProjects/threedify-215904/js/innerWorld.js",
 		"/D/TechProjects/threedify-215904/main.py",
 		"/D/TechProjects/threedify-215904/three.js-master/examples/css3d_orthographic.html",
 		"/D/TechProjects/threedify-215904/three.js-master/examples/css3d_sandbox.html",
-		"/D/TechProjects/threedify-215904/three.js-master/examples/css3d_youtube.html",
 		"/D/TechProjects/threedify-215904/threedify_proj.sublime-workspace",
 		"/C/Users/varro_000/OneDrive/Documents/webSurf/usersAccounts.txt",
 		"/C/Users/varro_000/OneDrive/Documents/webSurf/businessBackend.txt",
@@ -322,6 +341,16 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"direction",
+			"getY",
+			"contr",
+			"gui",
+			"instru",
+			"getDire",
+			"direction",
+			"getdir",
+			"camera",
+			"searchTe",
 			"camera",
 			"states",
 			"controls",
@@ -392,7 +421,7 @@
 	"groups":
 	[
 		{
-			"selected": 5,
+			"selected": 3,
 			"sheets":
 			[
 				{
@@ -456,15 +485,15 @@
 					"file": "templates/webSurf.html",
 					"settings":
 					{
-						"buffer_size": 813,
+						"buffer_size": 731,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								813,
-								813
+								401,
+								401
 							]
 						],
 						"settings":
@@ -473,7 +502,7 @@
 							"word_wrap": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 42.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -483,15 +512,15 @@
 					"file": "js/webSurf.js",
 					"settings":
 					{
-						"buffer_size": 7555,
+						"buffer_size": 10361,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2369,
-								2369
+								4662,
+								4662
 							]
 						],
 						"settings":
@@ -500,30 +529,58 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 294.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 4,
-					"file": "js/youtubeApi.js",
+					"file": "three.js-master/examples/css3d_youtube.html",
 					"settings":
 					{
-						"buffer_size": 845,
+						"buffer_size": 2936,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								532,
-								532
+								1309,
+								1309
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 42.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "three.js-master/examples/css3d_orthographic.html",
+					"settings":
+					{
+						"buffer_size": 3460,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -532,25 +589,25 @@
 					"type": "text"
 				},
 				{
-					"buffer": 5,
-					"file": "templates/test0.html",
+					"buffer": 6,
+					"file": "three.js-master/examples/css3d_sandbox.html",
 					"settings":
 					{
-						"buffer_size": 345,
+						"buffer_size": 3117,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								120,
-								120
+								0,
+								0
 							]
 						],
 						"settings":
 						{
 							"syntax": "Packages/HTML/HTML.tmLanguage",
-							"word_wrap": false
+							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -621,6 +678,6 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 147.0,
+	"side_bar_width": 136.0,
 	"status_bar_visible": true
 }
