@@ -16,7 +16,7 @@ function init() {
 	var pointLight = getPointLight(1);
 	var sphere = getSphere(0.05);
 	var plane = getPlane(5,5)
-	var arm = getBox(1,1,1)''
+	var arm = getBox(1,1,1);
 
 	//Controllers PointLock
 	var raycaster;
@@ -89,23 +89,30 @@ function init() {
 	//console.log(objects);
 
 	//add objects to the scene
-	scene.add(box);
+	//scene.add(box);
+	scene.add(arm);
+	camera.add(arm);
 	pointLight.add(sphere);
 	scene.add(pointLight);
 	scene.add(plane);
 	objects.push(box);
 	objects.push(plane);
-	camera.add(arm);
 
 	//positions of objects
 	camera.position.x=1;
 	camera.position.y=2;
 	camera.position.z=5;
+	
 	camera.lookAt(new THREE.Vector3(0,0,0));
+	
 	pointLight.position.y = 1.25;
 	plane.rotation.x = Math.PI/2;
 	box.position.y = box.geometry.parameters.height/2;
-
+	
+	arm.position.z = -10;
+	arm.position.y = -2;
+	arm.position.x = 4;
+	arm.rotation.y = 5;
 	//document.addEventListener('mousedown', playSound, false);
 
 /*
