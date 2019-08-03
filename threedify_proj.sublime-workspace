@@ -4,6 +4,10 @@
 		"selected_items":
 		[
 			[
+				"get",
+				"getBox"
+			],
+			[
 				"obje",
 				"objects"
 			],
@@ -18,10 +22,6 @@
 			[
 				"sc",
 				"scene"
-			],
-			[
-				"get",
-				"getObject"
 			],
 			[
 				"search",
@@ -179,7 +179,7 @@
 			"file": "js/webSurf.js",
 			"settings":
 			{
-				"buffer_size": 10361,
+				"buffer_size": 10315,
 				"line_ending": "Windows"
 			}
 		},
@@ -205,6 +205,30 @@
 			{
 				"buffer_size": 3117,
 				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "three.js-master/examples/misc_controls_transform.html",
+			"settings":
+			{
+				"buffer_size": 4955,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "three.js-master/examples/misc_animation_authoring.html",
+			"settings":
+			{
+				"buffer_size": 4187,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "js/youtubeApi.js",
+			"settings":
+			{
+				"buffer_size": 934,
+				"line_ending": "Windows"
 			}
 		}
 	],
@@ -232,6 +256,7 @@
 	},
 	"file_history":
 	[
+		"/D/Unity_2017.3.0_Projects/webSurf/Packages/manifest.json",
 		"/D/TechProjects/threedify-215904/js/youtubeApi.js",
 		"/D/TechProjects/threedify-215904/three.js-master/examples/webgl_geometry_minecraft_ao.html",
 		"/D/TechProjects/threedify-215904/three.js-master/examples/webgl_geometry_minecraft.html",
@@ -421,7 +446,7 @@
 	"groups":
 	[
 		{
-			"selected": 3,
+			"selected": 9,
 			"sheets":
 			[
 				{
@@ -492,8 +517,8 @@
 						"selection":
 						[
 							[
-								401,
-								401
+								678,
+								678
 							]
 						],
 						"settings":
@@ -512,15 +537,15 @@
 					"file": "js/webSurf.js",
 					"settings":
 					{
-						"buffer_size": 10361,
+						"buffer_size": 10315,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								4662,
-								4662
+								191,
+								191
 							]
 						],
 						"settings":
@@ -556,7 +581,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 42.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -607,6 +632,87 @@
 						"settings":
 						{
 							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "three.js-master/examples/misc_controls_transform.html",
+					"settings":
+					{
+						"buffer_size": 4955,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "three.js-master/examples/misc_animation_authoring.html",
+					"settings":
+					{
+						"buffer_size": 4187,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								447,
+								447
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 490.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "js/youtubeApi.js",
+					"settings":
+					{
+						"buffer_size": 934,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								934,
+								934
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
@@ -678,6 +784,6 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 136.0,
+	"side_bar_width": 133.0,
 	"status_bar_visible": true
 }
