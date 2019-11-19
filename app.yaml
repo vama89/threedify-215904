@@ -10,17 +10,8 @@ handlers:
 - url: /images
   static_dir: images
 
-- url: /three.js-master
-  static_dir: three.js-master
-
 - url: /js
   static_dir: js
-
-- url: /lib
-  static_dir: lib
-
-- url: /sounds
-  static_dir: sounds
 
 - url: .*
   script: main.app

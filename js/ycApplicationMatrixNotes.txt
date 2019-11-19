@@ -1,5 +1,0 @@
-I think the only reason this one I uploaded to yc worked cause maybe I'm not loading all those links from gyphy. This is one shot from images. Less of a load constraint cause I still get that CSSrender error on the console. Be aware of this when coding the actual build.
-
-https://developers.google.com/web/updates/2017/09/autoplay-policy-changes
-
-Seems chrome disables autoplay. Works on Edge. Don't know about Safari. My macbook is old. I'll have to keep up to date on web stuff like you would for Windows apps.
