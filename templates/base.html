@@ -2,9 +2,37 @@
 <html lang="en">
 	<head>
 		<title>WebSurf Brahhh!</title>
+		<!-- Latest compiled and minified CSS-->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js">
+		</script>
 	</head>
 <body>
-	{% block content %}
-	{% endblock %}
+		<div class="container">
+			<div class="page-header">
+				<ul class="nav nav-pills pull-left">
+					<li>
+						<a href="/">Home</a>
+					</li>
+					<li >
+						<a href="/">News</a>
+					</li>
+					<li >
+						<a href="/">Wiki</a>
+					</li>
+					<li>
+						<a href="/">Community</a>
+					</li>
+					<li >
+						<a href="/">Store</a>
+					</li>
+				</ul>
+			</div>
+
+			{% block content %}
+			{% endblock %}
+
+		</div>
 </body>
 </html>
