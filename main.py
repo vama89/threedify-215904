@@ -43,8 +43,13 @@ class Handler(webapp2.RequestHandler):
 
 class MainHandler(Handler):
     def get(self):
-        self.render("webSurf.html")
+        self.render("home.html")
+
+class store(Handler):
+    def get(self):
+        self.render("store.html")
 
 app = webapp2.WSGIApplication([
-    ('/', MainHandler)
+    ('/', MainHandler),
+    ('/store', store)
 ], debug=True)
